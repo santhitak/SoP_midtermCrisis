@@ -17,7 +17,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import java.util.ArrayList;
 import java.util.List;
 
-@Route("kuy")
+@Route("")
 public class ProductView extends VerticalLayout {
 
     @Autowired
