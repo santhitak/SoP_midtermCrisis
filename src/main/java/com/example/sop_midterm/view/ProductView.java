@@ -87,6 +87,13 @@ public class ProductView extends VerticalLayout {
             new Notification("Cleared Data", 500).open();
         });
 
+        productCost.addKeyPressListener(e -> {
+           if  (e.getKey().toString().equals("Enter")) refreshPrice();
+        });
+
+        productProfit.addKeyPressListener(e -> {
+            if  (e.getKey().toString().equals("Enter")) refreshPrice();
+        });
         btn.add(add, update, del, clear);
         container.add(productList, productName, productCost, productProfit, productPrice, btn);
         container.setWidth("600px");
@@ -98,17 +105,17 @@ public class ProductView extends VerticalLayout {
         setAlignItems(Alignment.CENTER);
     }
 
-    public void action(String key){
-        Double total = WebClient
+    public void refreshPrice() {
+        productPrice.setValue(WebClient
                 .create()
                 .get()
                 .uri("http://localhost:8080/getPrice/" + productCost.getValue() + "/" + productProfit.getValue())
                 .retrieve()
                 .bodyToMono(Double.class)
-                .block();
-
-        productPrice.setValue(total);
-
+                .block());
+    }
+    public void action(String key){
+        refreshPrice();
         String id = newProduct.getId();
         String name = productName.getValue();
         Double cost = productCost.getValue();
